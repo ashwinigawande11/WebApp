@@ -2,8 +2,8 @@ const assert = require('assert');
 
 describe('Basic cross-platform WeVote test',  () => {
   it('can visit the different pages in the app', async () => {
-    const isWebApp = !!driver.getContexts;
-    if (isWebApp) {
+    const isCordova = !!driver.getContexts;
+    if (isCordova) {
       // switch contexts and click through intro
       await driver.switchContext('WEBVIEW_org.wevote.cordova');
       const firstNextButton = await $('.background--image2 .btn.btn-lg');
@@ -16,13 +16,31 @@ describe('Basic cross-platform WeVote test',  () => {
     } else {
       // navigate browser to WeVote QA site
       await browser.url('https://quality.wevote.us/');
+	  
 
-    }
-    const valuesButtonSelector = (isWebApp) ? 'span=Values' : 'button[id="valuesTabHeaderBar"]';
-    const valuesButton =
-      await $(valuesButtonSelector);
-    await valuesButton.click();
+    }	
+
+// Go to the Values tab
+const ballotButtonSelector = (isCordova) ? 'span=Ballot' : 'button[id="ballotTabHeaderBar"]';
+    const ballotButton =
+      await $(ballotButtonSelector);
+    await ballotButton.click();
     await browser.pause(1000);
+
+// Go to the My Friends tab
+const friendButtonSelector = (isCordova) ? 'span=Friends' : 'button[id="friendsTabHeaderBar"]';
+    const friendButton =
+      await $(friendButtonSelector);
+    await friendButton.click();
+    await browser.pause(1000);
+	
+	// Go to the settings tab
+const settingButtonSelector = (isCordova) ? 'path=' : 'button[title="Settings"]';
+    const settingButton =
+      await $(settingButtonSelector);
+    await settingButton.click();
+    await browser.pause(1000);
+	
     assert(true);
   });
 });
